@@ -1,6 +1,6 @@
-import { CustomerModel, ProductModel, OrderModel } from "../models";
 import { v4 as uuidv4 } from "uuid";
-import { APIError, BadRequestError } from "../../utils/app-errors";
+import { APIError } from "../../utils/app-errors.js";
+import { OrderModel } from "../models/index.js";
 
 //Dealing with data base operations
 class ShoppingRepository {

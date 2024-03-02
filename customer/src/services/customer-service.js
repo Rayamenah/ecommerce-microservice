@@ -1,12 +1,12 @@
-import { CustomerRepository } from "../database";
+import { CustomerRepository } from "../database/index.js";
 import {
   FormateData,
   GeneratePassword,
   GenerateSalt,
   GenerateSignature,
   ValidatePassword,
-} from "../utils";
-import { APIError, BadRequestError } from "../utils/app-errors";
+} from "../utils/index.js";
+import { APIError, BadRequestError } from "../utils/app-errors.js";
 
 // All Business logic will be here
 class CustomerService {

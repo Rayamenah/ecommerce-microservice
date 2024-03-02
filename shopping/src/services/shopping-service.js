@@ -1,6 +1,6 @@
-import { ShoppingRepository } from "../database";
-import { FormateData } from "../utils";
-import { APIError } from "../utils/app-errors";
+import { ShoppingRepository } from "../database/index.js";
+import { FormateData } from "../utils/index.js";
+import { APIError } from "../utils/app-errors.js";
 
 // All Business logic will be here
 class ShoppingService {

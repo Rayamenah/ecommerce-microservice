@@ -65,10 +65,4 @@ class ValidationError extends AppError {
   }
 }
 
-module.exports = {
-  AppError,
-  APIError,
-  BadRequestError,
-  ValidationError,
-  STATUS_CODES,
-};
+export { AppError, APIError, BadRequestError, ValidationError, STATUS_CODES };

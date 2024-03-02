@@ -1,9 +1,5 @@
-import { CustomerModel, AddressModel } from "../models";
-import {
-  APIError,
-  BadRequestError,
-  STATUS_CODES,
-} from "../../utils/app-errors";
+import { APIError, STATUS_CODES } from "../../utils/app-errors.js";
+import { AddressModel, CustomerModel } from "../models/index.js";
 
 //Dealing with data base operations
 class CustomerRepository {

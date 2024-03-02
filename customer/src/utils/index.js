@@ -1,5 +1,6 @@
 import { genSalt, hash } from "bcrypt";
-import { sign, verify } from "jsonwebtoken";
+import sign from "jsonwebtoken";
+import verify from "jsonwebtoken";
 import amqplib from "amqplib";
 import {
   APP_SECRET,
@@ -7,7 +8,7 @@ import {
   MESSAGE_BROKER_URL,
   EXCHANGE_NAME,
   CUSTOMER_BINDING_KEY,
-} from "../config";
+} from "../config/index.js";
 
 //Utility functions
 export async function GenerateSalt() {

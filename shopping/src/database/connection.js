@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import { DB_URL } from "../config";
+import { DB_URL } from "../config/index.js";
 
 export default async () => {
   try {

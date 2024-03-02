@@ -1,7 +1,7 @@
-import { SHOPPING_BINDING_KEY } from "../config";
-import ProductService from "../services/product-service";
-import { PublishMessage } from "../utils";
-import UserAuth from "./middlewares/auth";
+import { SHOPPING_BINDING_KEY } from "../config/index.js";
+import ProductService from "../services/product-service.js";
+import { PublishMessage } from "../utils/index.js";
+import UserAuth from "./middlewares/auth.js";
 
 export default (app, channel) => {
   const service = new ProductService();

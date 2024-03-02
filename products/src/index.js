@@ -1,8 +1,8 @@
 import express from "express";
-import { PORT } from "./config";
-import { databaseConnection } from "./database";
-import expressApp from "./express-app";
-import { CreateChannel } from "./utils";
+import { PORT } from "./config/index.js";
+import { databaseConnection } from "./database/index.js";
+import expressApp from "./express-app.js";
+import { CreateChannel } from "./utils/index.js";
 
 const StartServer = async () => {
   const app = express();

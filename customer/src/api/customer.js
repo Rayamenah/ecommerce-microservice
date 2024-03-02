@@ -1,6 +1,6 @@
-import CustomerService from "../services/customer-service";
-import { SubscribeMessage } from "../utils";
-import UserAuth from "./middlewares/auth";
+import CustomerService from "../services/customer-service.js";
+import { SubscribeMessage } from "../utils/index.js";
+import UserAuth from "./middlewares/auth.js";
 
 export default (app, channel) => {
   const service = new CustomerService();

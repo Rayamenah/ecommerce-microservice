@@ -1,5 +1,5 @@
-import { ProductModel } from "../models";
-import { APIError, BadRequestError } from "../../utils/app-errors";
+import { ProductModel } from "../models/index.js";
+import { APIError, BadRequestError } from "../../utils/app-errors.js";
 
 //Dealing with data base operations
 class ProductRepository {

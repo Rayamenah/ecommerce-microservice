@@ -1,4 +1,4 @@
-import CustomerService from "../services/shopping-service";
+import CustomerService from "../services/shopping-service.js";
 
 export default (app) => {
   const service = new CustomerService();

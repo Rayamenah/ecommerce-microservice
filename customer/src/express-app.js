@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { customer, appEvent } from "./api";
-import HandleErrors from "./utils/error-handler";
+import { customer, appEvent } from "./api/index.js";
+import HandleErrors from "./utils/error-handler.js";
 
 export default async (app, channel) => {
   app.use(express.json({ limit: "1mb" }));
