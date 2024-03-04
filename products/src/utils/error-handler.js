@@ -1,5 +1,5 @@
 import { createLogger, transports } from "winston";
-import { AppError } from "./app-errors.js";
+import AppError from "./app-errors.js";
 
 const LogErrors = createLogger({
   transports: [

@@ -1,6 +1,6 @@
-const { ValidateSignature } = require("../../utils/index.js");
+import { ValidateSignature } from "../../utils/index.js";
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   const isAuthorized = await ValidateSignature(req);
 
   if (isAuthorized) {

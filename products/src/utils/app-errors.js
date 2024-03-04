@@ -65,7 +65,7 @@ class ValidationError extends AppError {
   }
 }
 
-module.exports = {
+export default {
   AppError,
   APIError,
   BadRequestError,

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { APIError } from "../../utils/app-errors.js";
+import APIError from "../../utils/app-errors.js";
 import { OrderModel } from "../models/index.js";
 
 //Dealing with data base operations

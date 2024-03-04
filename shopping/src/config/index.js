@@ -13,4 +13,5 @@ export const APP_SECRET = process.env.APP_SECRET;
 export const MESSAGE_BROKER_URL = process.env.MESSAGE_BROKER_URL;
 export const EXCHANGE_NAME = "ONLINE_SHOPPING";
 export const CUSTOMER_BINDING_KEY = "CUSTOMER_SERVICE";
+export const SHOPPING_BINDING_KEY = "SHOPPING_SERVICE";
 export const QUEUE_NAME = "SHOPPING_QUEUE";

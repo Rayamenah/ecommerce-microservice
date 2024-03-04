@@ -1,6 +1,6 @@
 import { ProductRepository } from "../database/index.js";
 import { FormateData } from "../utils/index.js";
-import { APIError } from "../utils/app-errors.js";
+import APIError from "../utils/app-errors.js";
 
 // All Business logic will be here
 class ProductService {

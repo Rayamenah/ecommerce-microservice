@@ -1,7 +1,7 @@
-import express, { json } from "express";
+import express from "express";
 
 const app = express();
-app.use(json());
+app.use(express.json());
 
 app.use("/", (req, res, next) => {
   res.status(200).send("hello from shopping");
