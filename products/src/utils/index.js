@@ -6,6 +6,9 @@ import {
   EXCHANGE_NAME,
   MESSAGE_BROKER_URL,
 } from "../config/index.js";
+import { v4 as uuid4 } from "uuid";
+
+let amqplibConnection = null;
 
 //Utility functions
 export async function GenerateSalt() {
@@ -51,12 +54,18 @@ export function FormateData(data) {
 }
 
 /* -------------------- Message broker ---------------*/
+//get channel
+const getChannel = async () => {
+  if (amqplibConnection === null) {
+    amqplibConnection = await amqplib.connect(MESSAGE_BROKER_URL);
+  }
+  return await amqplibConnection.createChannel();
+};
 
 //create channel
 export async function CreateChannel() {
   try {
-    const connection = await amqplib.connect(MESSAGE_BROKER_URL);
-    const channel = await connection.createChannel();
+    const channel = await getChannel();
     await channel.assertExchange(EXCHANGE_NAME, "direct", false);
     return channel;
   } catch (err) {
@@ -74,17 +83,31 @@ export async function PublishMessage(channel, binding_key, message) {
   }
 }
 
-//subscribe message
-export async function SubscribeMessage(channel, service, binding_key) {
-  try {
-    const appQueue = await channel.assertQueue("QUEUE_NAME");
-    channel.bindQueue(appQueue.queue, EXCHANGE_NAME, binding_key);
-    channel.consume(appQueue.queue, (data) => {
-      console.log("recieved data");
-      console.log(data.content.toString());
-      console.log(data);
-    });
-  } catch (err) {
-    throw err;
-  }
-}
+export const RPCObserver = async (RPC_QUEUE_NAME, service) => {
+  const channel = await getChannel();
+  await channel.assertQueue(RPC_QUEUE_NAME, {
+    durable: false,
+  });
+  channel.prefetch(1);
+  channel.consume(
+    RPC_QUEUE_NAME,
+    async (msg) => {
+      if (msg.content) {
+        // DB Operation
+        const payload = JSON.parse(msg.content.toString());
+        const response = await service.serveRPCRequest(payload);
+        channel.sendToQueue(
+          msg.properties.replyTo,
+          Buffer.from(JSON.stringify(response)),
+          {
+            correlationId: msg.properties.correlationId,
+          }
+        );
+        channel.ack(msg);
+      }
+    },
+    {
+      noAck: false,
+    }
+  );
+};

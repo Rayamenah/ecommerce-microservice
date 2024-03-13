@@ -9,10 +9,6 @@ export default async (app, channel) => {
   app.use(cors());
   // app.use(express.static(__dirname + "/public"));
 
-  //listen to events
-  appEvent(app);
-
-  //api
   customer(app, channel);
 
   // error handling

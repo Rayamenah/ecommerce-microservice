@@ -1,15 +1,11 @@
-// import { connect } from "mongoose";
+import mongoose from "mongoose";
 import { DB_URL } from "../config/index.js";
-import { MongoClient } from "mongodb";
 
 export default async () => {
-  const client = new MongoClient(DB_URL);
   try {
-    await client.connect();
-    console.log("Db Connected");
+    mongoose.connect(DB_URL);
+    console.log("Db connected");
   } catch (err) {
     console.log(err);
-  } finally {
-    await client.close();
   }
 };

@@ -1,6 +1,6 @@
 import { ProductRepository } from "../database/index.js";
-import { FormateData } from "../utils/index.js";
 import APIError from "../utils/app-errors.js";
+import { FormateData } from "../utils/index.js";
 
 // All Business logic will be here
 class ProductService {
@@ -83,6 +83,22 @@ class ProductService {
       return FormateData(payload);
     } else {
       return FormateData({ error: "No product avaliable" });
+    }
+  }
+
+  //RPC RESPONSE
+
+  async serveRPCRequest(payload) {
+    const { type, data } = payload;
+    switch (type) {
+      case "VIEW_PRODUCT":
+        return this.repository.FindById(data);
+        break;
+      case "VIEW_PRODUCTS":
+        return this.repository.FindSelectedProducts(data);
+        break;
+      default:
+        break;
     }
   }
 }

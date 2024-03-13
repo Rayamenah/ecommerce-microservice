@@ -4,39 +4,11 @@ const Schema = _Schema;
 
 const CustomerSchema = new Schema(
   {
-    email: String,
-    password: String,
-    salt: String,
-    phone: String,
+    email: { type: String, require: true },
+    password: { type: String, require: true },
+    salt: { type: String, require: true },
+    phone: { type: String },
     address: [{ type: Schema.Types.ObjectId, ref: "address", require: true }],
-    cart: [
-      {
-        product: {
-          _id: { type: String, require: true },
-          name: { type: String },
-          banner: { type: String },
-          price: { type: Number },
-        },
-        unit: { type: Number, require: true },
-      },
-    ],
-    wishlist: [
-      {
-        _id: { type: String, require: true },
-        name: { type: String },
-        description: { type: String },
-        banner: { type: String },
-        avaliable: { type: Boolean },
-        price: { type: Number },
-      },
-    ],
-    orders: [
-      {
-        _id: { type: String, require: true },
-        amount: { type: String },
-        date: { type: Date, default: Date.now() },
-      },
-    ],
   },
   {
     toJSON: {

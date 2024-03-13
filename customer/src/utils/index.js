@@ -1,6 +1,5 @@
 import { genSalt, hash } from "bcrypt";
-import sign from "jsonwebtoken";
-import verify from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import amqplib from "amqplib";
 import {
   APP_SECRET,
@@ -25,7 +24,7 @@ export async function ValidatePassword(enteredPassword, savedPassword, salt) {
 
 export async function GenerateSignature(payload) {
   try {
-    return await sign(payload, APP_SECRET, { expiresIn: "30d" });
+    return await jwt.sign(payload, APP_SECRET, { expiresIn: "30d" });
   } catch (error) {
     console.log(error);
     return error;
@@ -36,7 +35,7 @@ export async function ValidateSignature(req) {
   try {
     const signature = req.get("Authorization");
     console.log(signature);
-    const payload = await verify(signature.split(" ")[1], APP_SECRET);
+    const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
     req.user = payload;
     return true;
   } catch (error) {

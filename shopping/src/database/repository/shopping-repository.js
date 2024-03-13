@@ -1,90 +1,95 @@
 import { v4 as uuidv4 } from "uuid";
 import APIError from "../../utils/app-errors.js";
-import { OrderModel } from "../models/index.js";
-
+import { CartModel, OrderModel, WishlistModel } from "../models/index.js";
+import _ from "lodash";
 //Dealing with data base operations
 class ShoppingRepository {
   // payment
 
-  async Orders(customerId) {
+  /* -------------- CART-------------- */
+
+  async Cart(customerId) {
+    return CartModel.findOne({ customerId });
+  }
+
+  async ManageCart(customerId, product, qty, isRemove) {
+    const cart = await CartModel.findOne({ customerId });
+    if (cart) {
+      if (isRemove) {
+        //handle remove
+        const cartItems = _.filter(
+          cart.items,
+          (item) => item.product._id !== product.id
+        );
+        cart.items = cartItems;
+      } else {
+        const cartIndex = _.findIndex(cart.items, {
+          product: { _id: product._id },
+        });
+        if (cartIndex > -1) {
+          cart.items[cartIndex].unit = qty;
+        } else {
+          cart.items.push({ product: { ...product }, unit: qty });
+        }
+      }
+      return await cart.save();
+    } else {
+      //create new one
+      return await CartModel.create({
+        customerId,
+        items: [{ products: { ...product }, unit: qty }],
+      });
+    }
+  }
+
+  //WISHLIST
+  async ManageWishlist(customerId, product_id, isRemove = false) {
+    const wishlist = await WishlistModel.findOne({ customerId });
+    if (wishlist) {
+      if (isRemove) {
+        //handle remove
+        const products = _.filter(
+          wishlist.products,
+          (product) => product._id !== product_id
+        );
+        wishlist.products = products;
+      } else {
+        const wishlistIndex = _.findIndex(wishlist.products, {
+          _id: product_id,
+        });
+        if (wishlistIndex > 0) {
+          wishlist.products.push({ _id: product_id });
+        }
+      }
+      return await wishlist.save();
+    } else {
+      //create new one
+      return await WishlistModel.create({
+        customerId,
+        products: [{ _id: product_id }],
+      });
+    }
+  }
+
+  async GetWishlistByCustomerId(customerId) {
+    return await WishlistModel.findOne({ customerId });
+  }
+
+  /* -------------- ORDERS-------------- */
+
+  async Orders(customerId, orderId) {
     try {
-      const orders = await OrderModel.find({ customerId });
-      return orders;
+      if (orderId) {
+        return await OrderModel.findOne({ _id: orderId });
+      } else {
+        return OrderModel.find({ customerId });
+      }
     } catch (err) {
       throw APIError(
         "API Error",
         STATUS_CODES.INTERNAL_ERROR,
         "Unable to Find Orders"
       );
-    }
-  }
-
-  async Cart(customerId) {
-    try {
-      const cartItems = await CartModel.find({ customerId: customerId });
-      if (cartItems) {
-        return cartItems;
-      }
-      throw new Error("data not found");
-    } catch (err) {}
-    throw err;
-  }
-
-  async AddCartItem(customerId, item, qty, isRemove) {
-    try {
-      const cart = await CartModel.findOne({ customerId: customerId });
-      const { _id } = item;
-
-      if (cart) {
-        let isExist = false;
-
-        let cartItems = cart.item;
-
-        if (cartItems.length > 0) {
-          cartItems.map((item) => {
-            if (item.product._id.toString() === product._id.toString()) {
-              if (isRemove) {
-                cartItems.splice(cartItems.indexOf(item), 1);
-              } else {
-                item.unit = qty;
-              }
-              isExist = true;
-            }
-          });
-
-          if (!isExist && !isRemove) {
-            cartItems.push({ product: { ...item }, unit: qty });
-          }
-          cart.items = cartItemms;
-
-          return await cart.save();
-        } else {
-          return await CartModel.create({
-            customerId,
-            item: [{ product: { ...item }, unit, qty }],
-          });
-        }
-      }
-
-      throw new Error("Unable to add to cart!");
-    } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Create Customer"
-      );
-    }
-  }
-  async Orderdetails(orderId) {
-    try {
-      const orderDetails = await OrderModel.findOne({ orderId: orderId });
-
-      if (orderdetails) {
-        return orderDetails;
-      }
-      throw new Error("order not found");
-    } catch (err) {
-      throw err;
     }
   }
 
@@ -136,6 +141,12 @@ class ShoppingRepository {
         "Unable to Find Category"
       );
     }
+  }
+  async deleteProfileData(customerId) {
+    return Promise.all([
+      CartModel.findOneAndDelete({ customerId }),
+      WishlistModel.findOneAndDelete({ customerId }),
+    ]);
   }
 }
 

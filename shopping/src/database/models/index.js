@@ -3,5 +3,6 @@
 
 import OrderModel from "./Order.js";
 import CartModel from "./Cart.js";
+import WishlistModel from "./Wishlist.js";
 
-export { OrderModel, CartModel };
+export { OrderModel, CartModel, WishlistModel };

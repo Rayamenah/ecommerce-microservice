@@ -1,0 +1,1 @@
+{"level":"error","message":"Sat Mar 09 2024 15:35:08 GMT+0100 (West Africa Standard Time)-{\"expose\":true,\"statusCode\":400,\"status\":400,\"body\":\"{\\n  \\\"email\\\": \\\"test@test.com\\\",\\n  \\\"password\\\": \\\"23345756\\\",\\n}\",\"type\":\"entity.parse.failed\"}","private":true}
