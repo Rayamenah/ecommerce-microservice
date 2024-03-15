@@ -1,10 +1,18 @@
-import { APIError, STATUS_CODES } from "../../utils/app-errors.js";
+import {
+  APIError,
+  NotFoundError,
+  STATUS_CODES,
+} from "../../utils/errors/app-errors.js";
 import { AddressModel, CustomerModel } from "../models/index.js";
 
 //Dealing with data base operations
 class CustomerRepository {
   async CreateCustomer({ email, password, phone, salt }) {
     try {
+      //check if customer exists
+      const existingCustomer = await CustomerModel.findOne({ email });
+      if (existingCustomer) throw new Error("user already exists");
+
       const customer = new CustomerModel({
         email,
         password,
@@ -14,8 +22,6 @@ class CustomerRepository {
       });
 
       const customerResult = await customer.save();
-
-      console.log(customerResult);
       return customerResult;
     } catch (err) {
       throw new APIError(
@@ -29,19 +35,17 @@ class CustomerRepository {
   async CreateAddress({ _id, street, postalCode, city, country }) {
     try {
       const profile = await CustomerModel.findById(_id);
+      if (!profile) throw new NotFoundError("user not found");
+      const newAddress = new AddressModel({
+        street,
+        postalCode,
+        city,
+        country,
+      });
 
-      if (profile) {
-        const newAddress = new AddressModel({
-          street,
-          postalCode,
-          city,
-          country,
-        });
+      await newAddress.save();
 
-        await newAddress.save();
-
-        profile.address.push(newAddress);
-      }
+      profile.address.push(newAddress);
 
       return await profile.save();
     } catch (err) {
@@ -55,7 +59,7 @@ class CustomerRepository {
 
   async FindCustomer({ email }) {
     try {
-      const existingCustomer = await CustomerModel.findOne({ email: email });
+      const existingCustomer = await CustomerModel.findOne({ email });
       return existingCustomer;
     } catch (err) {
       throw new APIError(

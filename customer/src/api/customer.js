@@ -1,5 +1,5 @@
 import CustomerService from "../services/customer-service.js";
-import { SubscribeMessage } from "../utils/index.js";
+import { PublishMessage } from "../utils/index.js";
 import UserAuth from "./middlewares/auth.js";
 
 export default (app, channel) => {
@@ -9,8 +9,8 @@ export default (app, channel) => {
 
   app.post("/signup", async (req, res, next) => {
     try {
-      const { email, password, phone } = req.body;
-      const data = await service.SignUp({ email, password, phone });
+      // const { email, password, phone } = req.body;
+      const data = await service.SignUp(req.body);
       return res.json(data);
     } catch (err) {
       next(err);
@@ -19,8 +19,8 @@ export default (app, channel) => {
 
   app.post("/login", async (req, res, next) => {
     try {
-      const { email, password } = req.body;
-      const { data } = await service.SignIn({ email, password });
+      // const { email, password } = req.body;
+      const data = await service.SignIn(req.body);
       return res.json(data);
     } catch (err) {
       next(err);
@@ -30,12 +30,9 @@ export default (app, channel) => {
   app.post("/address", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
-      const { street, postalCode, city, country } = req.body;
-      const { data } = await service.AddNewAddress(_id, {
-        street,
-        postalCode,
-        city,
-        country,
+      // const { street, postalCode, city, country } = req.body;
+      const data = await service.AddNewAddress(_id, {
+        ...req.body,
       });
 
       return res.json(data);
@@ -47,7 +44,7 @@ export default (app, channel) => {
   app.get("/profile", UserAuth, async (req, res, next) => {
     try {
       const { _id } = req.user;
-      const { data } = await service.GetProfile({ _id });
+      const data = await service.GetProfile({ _id });
       return res.json(data);
     } catch (err) {
       next(err);

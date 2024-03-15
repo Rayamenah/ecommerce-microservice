@@ -1,7 +1,7 @@
+import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import APIError from "../../utils/app-errors.js";
 import { CartModel, OrderModel, WishlistModel } from "../models/index.js";
-import _ from "lodash";
 //Dealing with data base operations
 class ShoppingRepository {
   // payment
@@ -12,14 +12,14 @@ class ShoppingRepository {
     return CartModel.findOne({ customerId });
   }
 
-  async ManageCart(customerId, product, qty, isRemove) {
+  async ManageCart(customerId, product, qty, isRemove = false) {
     const cart = await CartModel.findOne({ customerId });
     if (cart) {
       if (isRemove) {
         //handle remove
         const cartItems = _.filter(
           cart.items,
-          (item) => item.product._id !== product.id
+          (item) => item.product._id !== product._id
         );
         cart.items = cartItems;
       } else {
@@ -42,7 +42,7 @@ class ShoppingRepository {
     }
   }
 
-  //WISHLIST
+  /* -------------- WISHLIST-------------- */
   async ManageWishlist(customerId, product_id, isRemove = false) {
     const wishlist = await WishlistModel.findOne({ customerId });
     if (wishlist) {
@@ -142,6 +142,7 @@ class ShoppingRepository {
       );
     }
   }
+  //delete cart and wishlist when profile is deleted
   async deleteProfileData(customerId) {
     return Promise.all([
       CartModel.findOneAndDelete({ customerId }),

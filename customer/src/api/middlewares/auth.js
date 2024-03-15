@@ -1,10 +1,15 @@
+import { UnauthorizedError } from "../../utils/errors/app-errors.js";
 import { ValidateSignature } from "../../utils/index.js";
 
 export default async (req, res, next) => {
-  const isAuthorized = await ValidateSignature(req);
+  try {
+    const isAuthorized = await ValidateSignature(req);
 
-  if (isAuthorized) {
-    return next();
+    if (isAuthorized) {
+      return next();
+    }
+    throw new UnauthorizedError("not authorized to access resource");
+  } catch (err) {
+    next(err);
   }
-  return res.status(403).json({ message: "Not Authorized" });
 };

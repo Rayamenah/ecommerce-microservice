@@ -7,18 +7,10 @@ export default (app, channel) => {
 
   app.post("/product/create", async (req, res, next) => {
     try {
-      const { name, desc, type, unit, price, available, suplier, banner } =
-        req.body;
+      // const { name, desc, type, unit, price, available, suplier, banner } = req.body;
       // validation
-      const { data } = await service.CreateProduct({
-        name,
-        desc,
-        type,
-        unit,
-        price,
-        available,
-        suplier,
-        banner,
+      const data = await service.CreateProduct({
+        ...req.body,
       });
       return res.json(data);
     } catch (err) {
@@ -28,9 +20,8 @@ export default (app, channel) => {
 
   app.get("/category/:type", async (req, res, next) => {
     const type = req.params.type;
-
     try {
-      const { data } = await service.GetProductsByCategory(type);
+      const data = await service.GetProductsByCategory(type);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
@@ -39,7 +30,6 @@ export default (app, channel) => {
 
   app.get("/:id", async (req, res, next) => {
     const productId = req.params.id;
-
     try {
       const { data } = await service.GetProductDescription(productId);
       return res.status(200).json(data);

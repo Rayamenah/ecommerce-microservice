@@ -1,6 +1,5 @@
-import { CUSTOMER_BINDING_KEY } from "../config/index.js";
 import ShoppingService from "../services/shopping-service.js";
-import { PublishMessage, SubscribeMessage } from "../utils/index.js";
+import { SubscribeMessage } from "../utils/index.js";
 import UserAuth from "./middlewares/auth.js";
 
 export default (app, channel) => {
@@ -8,11 +7,12 @@ export default (app, channel) => {
   SubscribeMessage(channel, service);
 
   // CART
+
   app.post("/cart", async (req, res, next) => {
     const { _id } = req.user;
     const { product_id, qty } = req.body;
     try {
-      const { data } = await service.AddCartItem(_id, product_id, qty);
+      const data = await service.AddCartItem(_id, product_id, qty);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
@@ -22,7 +22,7 @@ export default (app, channel) => {
     const { _id } = req.user;
     const productId = req.params.id;
     try {
-      const { data } = await service.RemoveCartItem(_id, productId);
+      const data = await service.RemoveCartItem(_id, productId);
       return res.status(200).json(data);
     } catch (err) {
       next(err);

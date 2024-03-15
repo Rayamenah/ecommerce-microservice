@@ -9,12 +9,7 @@ class ProductService {
   }
 
   async CreateProduct(productInputs) {
-    try {
-      const productResult = await this.repository.CreateProduct(productInputs);
-      return FormateData(productResult);
-    } catch (err) {
-      throw new APIError("Data Not found");
-    }
+    return await this.repository.CreateProduct(productInputs);
   }
 
   async GetProducts() {
@@ -27,10 +22,10 @@ class ProductService {
         categories[type] = type;
       });
 
-      return FormateData({
+      return {
         products,
         categories: Object.keys(categories),
-      });
+      };
     } catch (err) {
       throw new APIError("Data Not found");
     }

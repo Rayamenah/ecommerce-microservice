@@ -3,17 +3,13 @@ import { ProductModel } from "../models/index.js";
 
 //Dealing with data base operations
 class ProductRepository {
-  async CreateProduct({
-    name,
-    desc,
-    type,
-    unit,
-    price,
-    available,
-    suplier,
-    banner,
-  }) {
+  async CreateProduct(productInputs) {
     try {
+      const { name, desc, type, unit, price, available, suplier, banner } =
+        productInputs;
+      // const existingProduct = await ProductModel.findOne({ name });
+      // if (existingProduct) throw new Error("user already exists");
+
       const product = new ProductModel({
         name,
         desc,

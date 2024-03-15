@@ -1,12 +1,10 @@
+import amqplib from "amqplib";
 import { genSalt, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
-import amqplib from "amqplib";
 import {
   APP_SECRET,
-  QUEUE_NAME,
-  MESSAGE_BROKER_URL,
   EXCHANGE_NAME,
-  CUSTOMER_BINDING_KEY,
+  MESSAGE_BROKER_URL,
 } from "../config/index.js";
 
 //Utility functions
@@ -66,17 +64,25 @@ export async function CreateChannel() {
   }
 }
 
-//subscribe message
-export async function SubscribeMessage(channel, service) {
+//Publish message to queue
+export async function PublishMessage(channel, binding_key, message) {
   try {
-    const appQueue = await channel.assertQueue(QUEUE_NAME);
-    channel.bindQueue(appQueue.queue, EXCHANGE_NAME, CUSTOMER_BINDING_KEY);
-    channel.consume(appQueue.queue, (data) => {
-      console.log("recieved data");
-      console.log(data.content.toString());
-      service.SubscribeEvents(data.content.toString);
-    });
+    await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
+    console.log("message has been sent");
   } catch (err) {
     throw err;
   }
 }
+// //Consume message from queue
+// export async function SubscribeMessage(channel, service) {
+//   try {
+//     const appQueue = await channel.assertQueue(QUEUE_NAME);
+//     channel.bindQueue(appQueue.queue, EXCHANGE_NAME, CUSTOMER_BINDING_KEY);
+//     channel.consume(appQueue.queue, (data) => {
+//       console.log(data.content.toString());
+//       service.SubscribeEvents(data.content.toString);
+//     });
+//   } catch (err) {
+//     throw err;
+//   }
+// }
