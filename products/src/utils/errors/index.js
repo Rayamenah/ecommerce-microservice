@@ -1,12 +1,19 @@
-import sentry from "@sentry/node";
-import _ from "@sentry/tracing";
+import * as Sentry from "@sentry/node";
+import { SENTRY_KEY } from "../../config/index.js";
 import {
   NotFoundError,
   UnauthorizedError,
   ValidationError,
-} from "./app-errors";
+} from "./app-errors.js";
 
 export default (app) => {
+  Sentry.init({
+    dsn: SENTRY_KEY,
+    tracesSampleRate: 1.0, //  Capture 100% of the transactions
+  });
+
+  app.use(Sentry.Handlers.errorHandler());
+
   app.use((error, req, res, next) => {
     let reportError = true[
       //skip common known errors
@@ -18,7 +25,7 @@ export default (app) => {
     });
 
     if (reportError) {
-      sentry.captureExecption(error);
+      Sentry.captureException(error);
     }
     const statusCode = error.statusCode || 500;
     const data = error.data || error.message;

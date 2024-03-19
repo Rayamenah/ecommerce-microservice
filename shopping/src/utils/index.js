@@ -5,19 +5,26 @@ import { v4 as uuid4 } from "uuid";
 import {
   APP_SECRET,
   EXCHANGE_NAME,
+  MESSAGE_BROKER_URL,
   SHOPPING_BINDING_KEY,
 } from "../config/index.js";
 
 let amqplibConnection = null;
 
 //Utility functions
-export async function GenerateSalt() {
-  return await genSalt();
-  utis;
-}
+// export async function GenerateSalt() {
+//   return await genSalt();
+// }
 
-export async function GeneratePassword(password, salt) {
-  return await hash(password, salt);
+export async function GeneratePassword(password) {
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  } catch (err) {
+    throw new Error("error hashing password", err);
+  }
+  // return await hash(password, salt);
 }
 
 export async function ValidatePassword(enteredPassword, savedPassword, salt) {
@@ -57,7 +64,7 @@ export function FormateData(data) {
 /* -------------------- Message broker ---------------*/
 const getChannel = async () => {
   if (amqplibConnection === null) {
-    amqplibConnection = await amqplib.connect("amqp://localhost");
+    amqplibConnection = await amqplib.connect(MESSAGE_BROKER_URL);
   }
   return await amqplibConnection.createChannel();
 };

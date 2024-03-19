@@ -14,3 +14,4 @@ export const MESSAGE_BROKER_URL = process.env.MESSAGE_BROKER_URL;
 export const EXCHANGE_NAME = "ONLINE_SHOPPING";
 export const CUSTOMER_BINDING_KEY = "CUSTOMER_SERVICE";
 export const QUEUE_NAME = "SHOPPING_QUEUE";
+export const SENTRY_KEY = process.env.SENTRY_KEY;

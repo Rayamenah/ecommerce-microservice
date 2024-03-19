@@ -6,17 +6,18 @@ import {
 import { AddressModel, CustomerModel } from "../models/index.js";
 
 //Dealing with data base operations
-class CustomerRepository {
-  async CreateCustomer({ email, password, phone, salt }) {
+export default class CustomerRepository {
+  async CreateCustomer(userInputs) {
+    const { email, password, phone, salt } = userInputs;
     try {
       //check if customer exists
-      const existingCustomer = await CustomerModel.findOne({ email });
-      if (existingCustomer) throw new Error("user already exists");
-
+      // const existingCustomer = await CustomerModel.findOne(email);
+      // if (!existingCustomer) {
+      //   throw new Error("user already exists");
+      // }
       const customer = new CustomerModel({
         email,
         password,
-        salt,
         phone,
         address: [],
       });
@@ -91,4 +92,4 @@ class CustomerRepository {
   }
 }
 
-export default CustomerRepository;
+// export default CustomerRepository;

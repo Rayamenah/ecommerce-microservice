@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
-import APIError from "../../utils/app-errors.js";
+import { APIError } from "../../utils/errors/app-errors.js";
 import { CartModel, OrderModel, WishlistModel } from "../models/index.js";
 //Dealing with data base operations
 class ShoppingRepository {

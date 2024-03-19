@@ -1,5 +1,5 @@
 import amqplib from "amqplib";
-import { genSalt, hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
   APP_SECRET,
@@ -8,12 +8,19 @@ import {
 } from "../config/index.js";
 
 //Utility functions
-export async function GenerateSalt() {
-  return await genSalt();
-}
+// export async function GenerateSalt() {
+//   return await genSalt();
+// }
 
-export async function GeneratePassword(password, salt) {
-  return await hash(password, salt);
+export async function GeneratePassword(password) {
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  } catch (err) {
+    throw new Error("error hashing password", err);
+  }
+  // return await hash(password, salt);
 }
 
 export async function ValidatePassword(enteredPassword, savedPassword, salt) {

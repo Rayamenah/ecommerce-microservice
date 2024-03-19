@@ -8,7 +8,6 @@ const WishlistSchema = new Schema({
     {
       _id: { type: String, require: true },
     },
-    s,
   ],
 });
 

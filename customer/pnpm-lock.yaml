@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@sentry/node':
+    specifier: ^7.107.0
+    version: 7.107.0
+  '@sentry/profiling-node':
+    specifier: ^7.107.0
+    version: 7.107.0
   amqplib:
     specifier: ^0.10.3
     version: 0.10.3
@@ -689,6 +695,55 @@ packages:
     resolution: {integrity: sha512-8zJ8N1x51xo9hwPh6AWnKdLGEC5N3lDa6kms1YHmFBoRhTpJR6HG8wWk0td1MVCu9cD4YBrvjZEtd5Obw0Fbnw==}
     dependencies:
       sparse-bitfield: 3.0.3
+    dev: false
+
+  /@sentry-internal/tracing@7.107.0:
+    resolution: {integrity: sha512-le9wM8+OHBbq7m/8P7JUJ1UhSPIty+Z/HmRXc5Z64ODZcOwFV6TmDpYx729IXDdz36XUKmeI+BeM7yQdTTZPfQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.107.0
+      '@sentry/types': 7.107.0
+      '@sentry/utils': 7.107.0
+    dev: false
+
+  /@sentry/core@7.107.0:
+    resolution: {integrity: sha512-C7ogye6+KPyBi8NVL0P8Rxx3Ur7Td8ufnjxosVy678lqY+dcYPk/HONROrzUFYW5fMKWL4/KYnwP+x9uHnkDmw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.107.0
+      '@sentry/utils': 7.107.0
+    dev: false
+
+  /@sentry/node@7.107.0:
+    resolution: {integrity: sha512-UZXkG7uThT2YyPW8AOSKRXp1LbVcBHufa4r1XAwBukA2FKO6HHJPjMUgY6DYVQ6k+BmA56CNfVjYrdLbyjBYYA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry-internal/tracing': 7.107.0
+      '@sentry/core': 7.107.0
+      '@sentry/types': 7.107.0
+      '@sentry/utils': 7.107.0
+    dev: false
+
+  /@sentry/profiling-node@7.107.0:
+    resolution: {integrity: sha512-28ZkfgvSVCDpsL9X35Y4bDpnGdn/aWsCq7c9A1Q7ruJjIE8DhVjsvYYpP+AJiBQ3ykba2qTEvh9xYBEn5KZDhg==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      detect-libc: 2.0.2
+      node-abi: 3.56.0
+    dev: false
+
+  /@sentry/types@7.107.0:
+    resolution: {integrity: sha512-H7qcPjPSUWHE/Zf5bR1EE24G0pGVuJgrSx8Tvvl5nKEepswMYlbXHRVSDN0gTk/E5Z7cqf+hUBOpkQgZyps77w==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils@7.107.0:
+    resolution: {integrity: sha512-C6PbN5gHh73MRHohnReeQ60N8rrLYa9LciHue3Ru2290eSThg4CzsPnx4SzkGpkSeVlhhptKtKZ+hp/ha3iVuw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.107.0
     dev: false
 
   /@sinclair/typebox@0.27.8:
@@ -2660,6 +2715,13 @@ packages:
   /negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /node-abi@3.56.0:
+    resolution: {integrity: sha512-fZjdhDOeRcaS+rcpve7XuwHBmktS1nS1gzgghwKUQQ8nTy2FdSDr6ZT8k6YhvlJeHmmQMYiT/IH9hfco5zeW2Q==}
+    engines: {node: '>=10'}
+    dependencies:
+      semver: 7.6.0
     dev: false
 
   /node-addon-api@5.1.0:

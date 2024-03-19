@@ -6,7 +6,7 @@ import {
 } from "../utils/errors/app-errors.js";
 import {
   GeneratePassword,
-  GenerateSalt,
+  // GenerateSalt,
   GenerateSignature,
   ValidatePassword,
 } from "../utils/index.js";
@@ -20,25 +20,20 @@ export default class CustomerService {
   async SignUp(userInputs) {
     const { email, password, phone } = userInputs;
     try {
-      // create salt
-      let salt = await GenerateSalt();
-
-      let userPassword = await GeneratePassword(password, salt);
+      let userPassword = await GeneratePassword(password);
       const customer = await this.repository.CreateCustomer({
         email,
-        userPassword,
+        password: userPassword,
         phone,
-        salt,
       });
-      console.log(customer);
       const token = await GenerateSignature({
         email: email,
         _id: customer._id,
       });
 
-      return { id: existingCustomer._id, token };
+      return { id: customer._id, token };
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("couldn not create customer", err);
     }
   }
 

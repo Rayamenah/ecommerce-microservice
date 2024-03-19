@@ -1,5 +1,5 @@
 import { ProductRepository } from "../database/index.js";
-import APIError from "../utils/app-errors.js";
+import { APIError } from "../utils/errors/app-errors.js";
 import { FormateData } from "../utils/index.js";
 
 // All Business logic will be here

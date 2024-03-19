@@ -47,4 +47,10 @@ class NotFoundError extends BaseError {
   }
 }
 
-export { APIError, NotFoundError, UnauthorizedError, ValidationError };
+export {
+  APIError,
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+  STATUS_CODES,
+};

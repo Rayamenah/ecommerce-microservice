@@ -89,5 +89,4 @@ export default (app, channel) => {
       next(err);
     }
   });
-  s;
 };

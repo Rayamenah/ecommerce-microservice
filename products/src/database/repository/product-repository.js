@@ -1,4 +1,4 @@
-import APIError from "../../utils/app-errors.js";
+import { APIError } from "../../utils/errors/app-errors.js";
 import { ProductModel } from "../models/index.js";
 
 //Dealing with data base operations
